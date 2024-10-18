@@ -47,6 +47,13 @@ library LibDiamond {
         mapping(bytes4 => bool) supportedInterfaces;
         // owner of the contract
         address contractOwner;
+
+        // ERC721 STORAGE
+
+        // MERKLE TREE STORAGE
+
+        // PRESALE STORAGE
+        bool presaleStarted;
     }
 
     function diamondStorage()
