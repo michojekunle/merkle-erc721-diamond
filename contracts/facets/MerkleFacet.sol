@@ -11,7 +11,9 @@ contract MerkleFacet {
         LibDiamond.diamondStorage().merkleRoot = _merkleRoot;
     }
 
-    function claim(bytes32[] calldata merkleProof) external {
+    event Claimed(address claimer);
+
+    function claim(bytes32[] calldata _merkleProof) external {
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
         
         require(!ds.hasClaimed[msg.sender], "Address already claimed");
@@ -25,6 +27,6 @@ contract MerkleFacet {
         // Mint NFT to claimer
         ERC721Facet(address(this)).mint(msg.sender);
 
-        emit Claimed(msg.sender, _amount);
+        emit Claimed(msg.sender);
     }
 }

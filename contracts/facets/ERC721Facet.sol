@@ -21,13 +21,31 @@ contract ERC721Facet {
         bool approved
     );
 
-    function balanceOf(address owner) external view returns (uint256) {
+    function balanceOf(address _owner) external view returns (uint256) {
         require(
-            owner != address(0),
+            _owner != address(0),
             "ERC721: balance query for the zero address"
         );
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
-        return ds.balances[owner];
+        return ds.balances[_owner];
+    }
+
+    function mint(address _to) external returns (uint256) {
+        require(_to != address(0), "ERC721: cannot mint to the zero address");
+        LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
+        
+         // Increment total supply and use it as the new tokenId
+        uint256 tokenId = ds.totalSupply;
+        ds.totalSupply += 1;
+
+        // Update balances and ownership
+        ds.balances[_to] += 1;
+        ds.owners[tokenId] = _to;
+
+        // Emit Transfer event from address(0) to _to
+        emit Transfer(address(0), _to, tokenId);
+
+        return tokenId;
     }
 
     function ownerOf(uint256 tokenId) external view returns (address) {
@@ -105,7 +123,6 @@ contract ERC721Facet {
         address operator
     ) external view returns (bool) {
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
-
         return ds.operatorApprovals[owner][operator];
     }
 }
