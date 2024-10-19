@@ -1,63 +1,43 @@
-const fs = require('fs');
-const csv = require('csv-parser');
-const { MerkleTree } = require('merkletreejs');
-const keccak256 = require('keccak256');
+// merkleTree.ts
+import { keccak256 } from "ethers";
+import { MerkleTree } from "merkletreejs";
+import * as fs from "fs";
 
-// Function to read the CSV and return an array of objects
-function readCSV(filename: any) {
-  return new Promise((resolve, reject) => {
-    const results: any[] = [];
-    fs.createReadStream(filename)
-      .pipe(csv())
-      .on('data', (data: any) => results.push(data))
-      .on('end', () => resolve(results))
-      .on('error', (error: any) => reject(error));
-  });
-}
+// List of addresses for which to generate Merkle tree and proofs
+const addresses = [
+    "0x1231231231231231231231231231231231231231",
+    "0x4564564564564564564564564564564564564564",
+    "0x7897897897897897897897897897897897897897",
+    "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+    "0xfedcbafedcbafedcbafedcbafedcbafedcbafedc"
+];
 
-// Function to generate the Merkle tree and proofs
-async function generateMerkleTree(csvFile: any) {
-  // Read the CSV file
-  const data = await readCSV(csvFile) as any[];
+// Generate leaves by hashing the addresses
+const leaves = addresses.map(addr => keccak256(addr));
 
-  // Map the data to an array of leaf nodes (hashed address + amount)
-  const leaves = data.map((row) => {
-    const address = row.address.trim();
-    const amount = row.amount.trim();
-    return keccak256(`${address},${amount}`);
-  });
+// Create the Merkle tree
+const tree = new MerkleTree(leaves, keccak256, { sortPairs: true });
 
-  // Create the Merkle tree
-  const merkleTree = new MerkleTree(leaves, keccak256, { sortPairs: true });
+// Get the Merkle root
+const root = tree.getHexRoot();
 
-  // Get the Merkle root
-  const merkleRoot = merkleTree.getHexRoot();
-  console.log('Merkle Root:', merkleRoot);
-
-  // Generate proofs for each address and save them in an object
-  const proofs = {};
-  data.forEach((row) => {
-    const address = row.address.trim();
-    const amount = row.amount.trim();
-    const leaf = keccak256(`${address},${amount}`);
-    const proof = merkleTree.getHexProof(leaf);
-    proofs[address] = { proof, amount };
-  });
-
-  // Write the proofs to a JSON file
-  fs.writeFileSync('proofs.json', JSON.stringify(proofs, null, 2));
-
-  console.log('Proofs saved to proofs.json');
-}
-
-// Run the script with the provided CSV file
-const csvFile = process.argv[2];
-if (!csvFile) {
-  console.error('Please provide a CSV file as an argument.');
-  process.exit(1);
-}
-
-generateMerkleTree(csvFile).catch((error) => {
-  console.error('Error generating Merkle tree:', error);
-  process.exit(1);
+// Generate proofs for each address
+const proofs = addresses.map((addr, index) => {
+    const leaf = leaves[index];
+    const proof = tree.getHexProof(leaf);
+    return {
+        address: addr,
+        proof: proof
+    };
 });
+
+// Save the Merkle root and proofs to a JSON file
+const merkleData = {
+    merkleRoot: root,
+    proofs: proofs
+};
+
+fs.writeFileSync("merkleData.json", JSON.stringify(merkleData, null, 2));
+
+console.log("Merkle Root:", root);
+console.log("Proofs have been saved to merkleData.json");

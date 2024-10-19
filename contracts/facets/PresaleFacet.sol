@@ -8,9 +8,9 @@ contract PresaleFacet {
     uint256 public constant RATE = 30; // 1 ETH = 30 NFTs
     uint256 public constant MIN_PURCHASE = 0.01 ether;
 
-    event TokensPurchased(address indexed buyer, uint256 amount);
+    event TokensPurchased(address indexed buyer, uint256 noOfTokens);
 
-    function setPresaleActive(bool _start) external {
+    function startPresale(bool _start) external {
         LibDiamond.enforceIsContractOwner();
         LibDiamond.diamondStorage().presaleStarted = _start;
     }
@@ -19,6 +19,7 @@ contract PresaleFacet {
         LibDiamond.DiamondStorage storage ds = LibDiamond.diamondStorage();
         require(ds.presaleStarted, "Presale has not started");
         require(msg.value >= MIN_PURCHASE, "Minimum purchase is 0.01 ETH");
+        
         uint256 numNFTs = (msg.value * RATE) / 1 ether;
 
         require(numNFTs > 0, "Insufficient ETH to buy NFTs");
@@ -27,10 +28,10 @@ contract PresaleFacet {
             ERC721Facet(address(this)).mint(msg.sender);
         }
 
-        emit TokensPurchased(msg.sender, tokenAmount);
+        emit TokensPurchased(msg.sender, numNFTs);
     }
 
-    function withdrawFunds() external {
+    function withdrawPresaleFunds() external {
         LibDiamond.enforceIsContractOwner();
         payable(LibDiamond.contractOwner()).transfer(address(this).balance);
     }

@@ -1,7 +1,12 @@
 { 
   "type": "module",
+  "main": "merkletree.ts",
+  "directories": {
+    "lib": "lib",
+    "test": "test"
+  },
   "scripts": {
-    "start": "ts-node script/generateMerkleTree.ts",
+    "start": "ts-node merkletree.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {

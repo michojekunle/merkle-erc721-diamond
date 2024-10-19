@@ -49,8 +49,16 @@ library LibDiamond {
         address contractOwner;
 
         // ERC721 STORAGE
+        string name;
+        string symbol;
+        mapping(uint256 => address) owners;
+        mapping(address => uint256) balances;
+        mapping(uint256 => address) tokenApprovals;
+        mapping(address => mapping(address => bool)) operatorApprovals;
 
         // MERKLE TREE STORAGE
+        bytes32 merkleRoot;
+        mapping(address => bool) hasClaimed;
 
         // PRESALE STORAGE
         bool presaleStarted;
