@@ -1,0 +1,43 @@
+{
+  "merkleRoot": "0xc7c9efa3bb6cca82bb0ffe3fedcae7410752cc7a292dde69bc3fe448038958df",
+  "proofs": [
+    {
+      "address": "0x1231231231231231231231231231231231231231",
+      "proof": [
+        "0x285d3c19f8a350fa232b602333ff666410d5d3b7879e2de8f5e357bfafe5b784",
+        "0x9ea0b14ba9c814739fbb6fc2913239d2763589522cf21ee1260e914554e8a40b",
+        "0x9ae1dfc0abbdd0e193c88214149e84b856ca7f0ad25e65964dec6d339c78f5d6"
+      ]
+    },
+    {
+      "address": "0x4564564564564564564564564564564564564564",
+      "proof": [
+        "0x50e265899840a5d4f5e4baf514ebd149904c11d1b7ca3fcb0cb100a0ac85b561",
+        "0x9ea0b14ba9c814739fbb6fc2913239d2763589522cf21ee1260e914554e8a40b",
+        "0x9ae1dfc0abbdd0e193c88214149e84b856ca7f0ad25e65964dec6d339c78f5d6"
+      ]
+    },
+    {
+      "address": "0x7897897897897897897897897897897897897897",
+      "proof": [
+        "0x11931207e8da7accf5e50dd69e142c20ede844f45df978ee0cad02480eba0138",
+        "0x13cf47faf556c599337f6a6473d115e39a03dbaf29370c3c237e9343ada5b20e",
+        "0x9ae1dfc0abbdd0e193c88214149e84b856ca7f0ad25e65964dec6d339c78f5d6"
+      ]
+    },
+    {
+      "address": "0xabcdefabcdefabcdefabcdefabcdefabcdefabcd",
+      "proof": [
+        "0x61c9d29b88c4ff626dce961abcbd17165efc6a1ed6c40eb971a8b647e433cd35",
+        "0x13cf47faf556c599337f6a6473d115e39a03dbaf29370c3c237e9343ada5b20e",
+        "0x9ae1dfc0abbdd0e193c88214149e84b856ca7f0ad25e65964dec6d339c78f5d6"
+      ]
+    },
+    {
+      "address": "0xfedcbafedcbafedcbafedcbafedcbafedcbafedc",
+      "proof": [
+        "0x5fabdc822384da17a6e58f36ac3d96bc0530620e55b8b42ca8b59be8da7769bf"
+      ]
+    }
+  ]
+}
